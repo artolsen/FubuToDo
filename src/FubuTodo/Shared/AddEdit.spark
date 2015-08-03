@@ -1,0 +1,55 @@
+﻿<viewdata model="FubuTodo.EndPoints.AddEditViewModel"/>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+  
+  <form method="post" action="/home/AddUpdate/">
+    <if condition='Model.ErrorMessage != ""'>
+      <h1>
+        <lable name='ErrorMessage'>${Model.ErrorMessage}</lable>
+      </h1>
+    </if>
+      
+  <table>
+    <tbody>
+      <tr>
+        <td>Description</td>
+        <td>
+          
+         
+          <input type="text" name="Description" id="Description" value="${Model.Description}" />
+        </td>
+      </tr>
+      <tr>
+        <td>Assigned To</td>
+        <td>
+          <input type="text" value="${Model.AssignedTo}" name="AssignedTo" id="AssignedTo" />
+        </td>
+      </tr>
+      <if condition="Model.IsCompleted">
+      <tr>
+        <td>Completed On</td>
+        <td>
+            <input type="hidden" name="CompletedOn" />
+          ${Model.CompletedOn.Value.ToShortDateString()} Completed <input type="checkbox" id="IsCompleted" name ="IsCompleted" checked="${Model.CompletedOn.HasValue}"></input>
+        </td>
+      </tr>
+      </if>
+      <else>
+        <tr>
+          <td>Set to Completed</td>
+          <td>
+            <input type="checkbox" id="IsCompleted" name ="IsCompleted"></input>
+          </td>
+        </tr>
+      </else>
+    </tbody>
+  </table>
+    <input type="hidden" name="Id" id="Id" value="${Model.Id}"/>
+    <button type="submit"> Add/Update </button>
+  </form>
+</body>
+</html>

@@ -1,0 +1,48 @@
+﻿<viewdata model="FubuTodo.EndPoints.IndexViewModel"/>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title></title>
+  </head>
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <td>Task</td>
+          <td>Assigned To</td>
+          <td>Completed</td>
+          <td colspan="2"></td>
+        </tr>
+      </thead>
+      <tbody>
+        <for each="var todo in Model.Tasks">
+          <tr>
+            <td>${todo.Description}</td>
+            <td>${todo.AssignedTo}</td>
+            <td>${todo.CompletedOn.HasValue? todo.CompletedOn.Value.ToShortDateString(): "no"}</td>
+            <td>
+              <form action="/home/AddEdit" method="get">
+                <input type="hidden" value="${todo.Id}" name ="Id"></input>
+                <button type ="submit">Edit</button>
+              </form>
+            </td>
+            <td>
+              <form action="/home/DeleteTask">
+                <input type="hidden" value="${todo.Id}" name ="Id"></input>
+                <button type ="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+        </for>
+      </tbody>
+    </table>
+    <div>
+      <form action="home/AddEdit?Id=0" method="get">
+        <div>
+          
+          <button type ="submit" >Add task</button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
