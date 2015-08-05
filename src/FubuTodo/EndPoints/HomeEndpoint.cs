@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using FubuMVC.Core.Continuations;
+using FubuTodoHelpers;
+using FubuTodoHelpers.Interfaces;
 using Raven.Client;
 using StructureMap.Building;
 
@@ -10,14 +12,15 @@ namespace FubuTodo.EndPoints
 {
     public class HomeEndpoint
     {
-        private IDocumentSession _session;
-        public HomeEndpoint(IDocumentSession session)
+        
+        private IFubuTodoService _fubuTodoService;
+        public HomeEndpoint(IFubuTodoService fubuTodoService)
         {
-            _session = session;
+            _fubuTodoService = fubuTodoService;
         }
         public IndexViewModel Index(IndexInputModel model)
         {
-            return new IndexViewModel() { Tasks = _session.Query<FubuTask>().Customize(x => x.WaitForNonStaleResults()).ToList() };
+            return new IndexViewModel() {Tasks = _fubuTodoService.LoadTasks()};
         }
 
         public AddEditViewModel AddEdit(AddEditInputViewModel inputViewModel)
@@ -39,7 +42,7 @@ namespace FubuTodo.EndPoints
             {
                 if (inputViewModel.Id != 0)
                 {
-                    var task = _session.Load<FubuTask>(inputViewModel.Id);
+                    var task = _fubuTodoService.LoadTask(inputViewModel.Id);
                     if (task != null)
                     {
                         model = new AddEditViewModel
@@ -57,7 +60,7 @@ namespace FubuTodo.EndPoints
                     }
                 }
                 else
-                {
+              {
                     model = new AddEditViewModel();
                 }
             }
@@ -96,16 +99,15 @@ namespace FubuTodo.EndPoints
             {
                 task.CompletedOn = DateTime.Now;
             }
-            _session.Store(task);
-            _session.SaveChanges();
+            
+            _fubuTodoService.SaveTask(task);
 
             return FubuContinuation.RedirectTo<IndexInputModel>();
         }
 
         public FubuContinuation DeleteTask(DeleteInputModel model)
         {
-            _session.Delete <FubuTask>(model.Id);
-            _session.SaveChanges();
+            _fubuTodoService.DeleteTask(model.Id);
             return FubuContinuation.RedirectTo<IndexInputModel>();
         }
 

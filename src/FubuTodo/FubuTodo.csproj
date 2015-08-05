@@ -142,7 +142,6 @@
     <Compile Include="EndPoints\AddEditInputViewModel.cs" />
     <Compile Include="EndPoints\AddEditViewModel.cs" />
     <Compile Include="EndPoints\DeleteInputModel.cs" />
-    <Compile Include="EndPoints\FubuTask.cs" />
     <Compile Include="EndPoints\HomeEndpoint.cs" />
     <Compile Include="EndPoints\IndexInputModel.cs" />
     <Compile Include="EndPoints\IndexViewModel.cs" />

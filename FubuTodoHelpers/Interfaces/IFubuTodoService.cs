@@ -8,5 +8,9 @@ namespace FubuTodoHelpers.Interfaces
 {
     public interface IFubuTodoService
     {
+        FubuTask LoadTask(int taskId);
+        List<FubuTask> LoadTasks();
+        void SaveTask(FubuTask task);
+        void DeleteTask(int taskId);
     }
 }
